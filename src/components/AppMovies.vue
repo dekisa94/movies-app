@@ -60,15 +60,18 @@
                 <input type="submit" class="btn btn-success" />
             </div>
       </form>
-      <ul class="list-group" v-for="(movie, key) in movies" :key="key">
-            <li class="list-group-item">{{movie.title}}</li>
-        </ul>
+      <h2>list of movies</h2>
+      <movie-row v-for="(movie, key) in movies" :key="key" :movie="movie"/>
     </div>
 </template>
 
 <script>
 import {movieService} from '../service/MovieService'
+import MovieRow from './MovieRow'
 export default {
+    components:{
+        MovieRow
+    },
     data(){
         return{
             movies: [],
