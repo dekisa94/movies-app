@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        RAdi
+        Radi
     </div>
 </template>
 
