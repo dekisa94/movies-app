@@ -8,5 +8,9 @@ export default class MovieService
     {
         return axios.get('movies')
     }
+    store(movie)
+    {
+        return axios.post('movies', movie)
+    }
 }
 export const movieService = new MovieService()
