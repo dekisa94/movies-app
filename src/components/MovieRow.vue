@@ -1,5 +1,5 @@
 <template>
-    <div> {{deselect}}
+    <div> {{deselect}} {{select}}
     <div class="row"
     :class="{ 'highlighted': selected }">
     
@@ -24,7 +24,8 @@ export default {
             type: Object,
             required: true
         },
-        isDeselect:{}
+        isDeselect:{},
+        isSelectAll:{}
     },
     data(){
         return{
@@ -41,6 +42,10 @@ export default {
         deselect(){
             if(this.isDeselect)
             this.selected=false
+        },
+        select(){
+            if(this.isSelectAll)
+            this.selected=true
         }
     }
 }

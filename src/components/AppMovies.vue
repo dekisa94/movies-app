@@ -69,7 +69,9 @@
         :movie="movie"
         @on-selected-movie="onSelectedMovie"
         :isDeselect="isDeselect"
+        :isSelectAll="isSelectAll"
       />
+      <button class="btn btn-success" @click="selectAll">Select All</button>
       <button class="btn btn-danger" @click="deselectAll">Deselect All</button>
       <div v-if="!movies.length">
         <h3>No Movies Found</h3>
@@ -88,6 +90,7 @@ export default {
     },
     data(){
         return{
+            isSelectAll: false,
             isDeselect: false,
             movies: [],
             selectedMoviesIds: [],
@@ -125,6 +128,17 @@ export default {
     deselectAll(){
         this.selectedMoviesIds=[]
         this.isDeselect=true
+        this.isSelectAll=false
+    },
+    selectAll(){
+        this.movies.forEach(movie =>{
+            if (this.selectedMoviesIds.indexOf(movie.id) > -1){
+                return
+            }
+            this.selectedMoviesIds.push(movie.id)
+        })
+        this.isSelectAll=true
+        this.isDeselect=false
     }
   },
   computed:{
