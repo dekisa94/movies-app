@@ -68,7 +68,9 @@
         :key="key" 
         :movie="movie"
         @on-selected-movie="onSelectedMovie"
+        :isDeselect="isDeselect"
       />
+      <button class="btn btn-danger" @click="deselectAll">Deselect All</button>
       <div v-if="!movies.length">
         <h3>No Movies Found</h3>
       </div>
@@ -86,6 +88,7 @@ export default {
     },
     data(){
         return{
+            isDeselect: false,
             movies: [],
             selectedMoviesIds: [],
             movieForm: {title: '', director: '', imageUrl: '', duration: '', releaseDate: '', genre: '' }
@@ -117,6 +120,11 @@ export default {
         return;
       }
       this.selectedMoviesIds.push(movie.id)
+      this.isDeselect=false
+    },
+    deselectAll(){
+        this.selectedMoviesIds=[]
+        this.isDeselect=true
     }
   },
   computed:{

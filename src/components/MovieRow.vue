@@ -1,6 +1,9 @@
 <template>
+    <div> {{deselect}}
     <div class="row"
     :class="{ 'highlighted': selected }">
+    
+
         
         <div class="col-sm" v-text="movie.id"></div>
         <div class="col-sm" v-text="movie.title"></div>
@@ -9,6 +12,7 @@
         <div class="col-sm" v-text="movie.genre"></div>
         <button class="btn btn-primary" @click="onSelected">Select</button>
 
+    </div>
     </div>
 </template>
 
@@ -19,7 +23,8 @@ export default {
         movie:{
             type: Object,
             required: true
-        }
+        },
+        isDeselect:{}
     },
     data(){
         return{
@@ -31,8 +36,13 @@ export default {
             this.selected=true
             this.$emit('on-selected-movie', this.movie)
         }
+    },
+    computed:{
+        deselect(){
+            if(this.isDeselect)
+            this.selected=false
+        }
     }
-    
 }
 </script>
 <style>
