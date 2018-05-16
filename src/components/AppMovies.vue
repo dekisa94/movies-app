@@ -63,6 +63,9 @@
       <h2>List of movies</h2>
       <movie-search @search-term-change="onSearchTermChanged"/>
       <movie-row v-for="(movie, key) in movies" :key="key" :movie="movie"/>
+      <div v-if="!movies.length">
+        <h3>No Movies Found</h3>
+      </div>
     </div>
 </template>
 
