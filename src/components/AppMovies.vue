@@ -61,8 +61,14 @@
             </div>
       </form>
       <h2>List of movies</h2>
+      <div>Selected: {{ selectedMoviesCounter }}</div>
       <movie-search @search-term-change="onSearchTermChanged"/>
-      <movie-row v-for="(movie, key) in movies" :key="key" :movie="movie"/>
+      <movie-row 
+        v-for="(movie, key) in movies" 
+        :key="key" 
+        :movie="movie"
+        @on-selected-movie="onSelectedMovie"
+      />
       <div v-if="!movies.length">
         <h3>No Movies Found</h3>
       </div>
@@ -81,6 +87,7 @@ export default {
     data(){
         return{
             movies: [],
+            selectedMoviesIds: [],
             movieForm: {title: '', director: '', imageUrl: '', duration: '', releaseDate: '', genre: '' }
         }
     },
@@ -104,7 +111,18 @@ export default {
               this.movies=response.data
               console.log(response.data)
           })
+      },
+      onSelectedMovie(movie) {
+      if (this.selectedMoviesIds.indexOf(movie.id) > -1) {
+        return;
       }
+      this.selectedMoviesIds.push(movie.id)
+    }
+  },
+  computed:{
+      selectedMoviesCounter() {
+      return this.selectedMoviesIds.length
+    }
   }
 }
 </script>
