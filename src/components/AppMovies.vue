@@ -60,7 +60,8 @@
                 <input type="submit" class="btn btn-success" />
             </div>
       </form>
-      <h2>list of movies</h2>
+      <h2>List of movies</h2>
+      <movie-search @search-term-change="onSearchTermChanged"/>
       <movie-row v-for="(movie, key) in movies" :key="key" :movie="movie"/>
     </div>
 </template>
@@ -68,9 +69,11 @@
 <script>
 import {movieService} from '../service/MovieService'
 import MovieRow from './MovieRow'
+import MovieSearch from './MovieSearch'
 export default {
     components:{
-        MovieRow
+        MovieRow,
+        MovieSearch
     },
     data(){
         return{
@@ -91,6 +94,13 @@ export default {
   methods:{
       storeMovie(){
           movieService.store(this.movieForm)
+      },
+      onSearchTermChanged(term){
+          movieService.getAll(term)
+          .then((response) => {
+              this.movies=response.data
+              console.log(response.data)
+          })
       }
   }
 }

@@ -4,9 +4,9 @@ export default class MovieService
     constructor(){
         axios.defaults.baseURL = 'http://localhost:3000/api/'
     }
-    getAll()
+    getAll(term='')
     {
-        return axios.get('movies')
+        return axios.get('movies',{params: {term}})
     }
     store(movie)
     {
