@@ -9,13 +9,25 @@
         <div class="navbar-nav">
           <!-- <router-link class="nav-item nav-link" to="/movies">Movies</router-link> -->
         </div>
+        <movie-search @search-term-change="setSearchTerm"/>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
+import MovieSearch from './MovieSearch'
+import { mapMutations } from 'vuex';
 export default {
+  name: 'NavBar',
+  components:{
+    MovieSearch
+  },
+  methods:{
+    ...mapMutations([
+      'setSearchTerm'
+    ])
+  }
 
 }
 </script>

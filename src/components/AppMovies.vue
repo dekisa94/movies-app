@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <form @submit.prevent="storeMovie">
-          <h2>Add new movie</h2>
+          <h2>Add new movie {{magicNumber}}</h2>
             <div class="form-group">
                 <label for="title">Movie title</label>
                 <input v-model="movieForm.title" 
@@ -62,7 +62,6 @@
       </form>
       <h2>List of movies</h2>
       <div>Selected: {{ selectedMoviesCounter }}</div>
-      <movie-search @search-term-change="onSearchTermChanged"/>
       <movie-row 
         v-for="(movie, key) in currentlyVisibleMovies" 
         :key="key" 
@@ -87,6 +86,7 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {movieService} from '../service/MovieService'
 import MovieRow from './MovieRow'
 import MovieSearch from './MovieSearch'
@@ -99,23 +99,25 @@ export default {
     },
     data(){
         return{
-            currentTerm: '',
+            intervalId: null,
+            // currentTerm: '',
             selectedPage: 1,
-            movies: [],
+            // movies: [],
             selectedMoviesIds: [],
             movieForm: {title: '', director: '', imageUrl: '', duration: '', releaseDate: '', genre: '' }
         }
     },
-    beforeRouteEnter (to, from, next) {
-    movieService.getAll()
-      .then((response) => {
-        next((vm) => {
-          vm.movies = response.data
-        })
-      }).catch((error) => {
-        console.log(error)
-      })
-  },
+    // beforeRouteEnter (to, from, next) {
+    // movieService.getAll()
+    //   .then((response) => {
+    //     next((vm) => {
+    //       vm.movies = response.data
+    //     })
+    //   }).catch((error) => {
+    //     console.log(error)
+    //   })
+    
+//   },
   methods:{
       storeMovie(){
           movieService.store(this.movieForm)
@@ -151,7 +153,13 @@ export default {
     },
     onSelectedPage(page){
         this.selectedPage=page
-    }
+    },
+    ...mapMutations([
+        'incrementCounter'
+    ]),
+    ...mapActions([
+        'fetchMovies'
+    ])
   },
   computed:{
       selectedMoviesCounter() {
@@ -171,7 +179,27 @@ export default {
         return this.movies.filter((movie) => {
             return movie.title.indexOf(this.currentTerm) > -1
         })
-    }
+    },
+    // magicNumber(){
+    //     console.log(this.$store.getters)
+    //     return 1
+    // }
+    ...mapGetters({
+        magicNumber:'getCounter',
+        currentTerm: 'getSearchTerm',
+        movies: 'getMovies'
+    })
+  },
+  mounted(){
+      this.intervalId = setInterval(() => {
+          this.incrementCounter()
+      }, 1000)
+  },
+  destroyed(){
+      clearInterval(this.intervalId)
+  },
+  created(){
+      this.fetchMovies()
   }
 }
 </script>
