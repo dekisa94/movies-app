@@ -14,7 +14,6 @@ export default {
     methods:{
         emitInputChangeEvent(term){
             this.$emit('search-term-change', term)
-            console.log(term)
         }
     }
 }

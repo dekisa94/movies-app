@@ -99,6 +99,7 @@ export default {
     },
     data(){
         return{
+            currentTerm: '',
             selectedPage: 1,
             movies: [],
             selectedMoviesIds: [],
@@ -120,11 +121,12 @@ export default {
           movieService.store(this.movieForm)
       },
       onSearchTermChanged(term){
-          movieService.getAll(term)
-          .then((response) => {
-              this.movies=response.data
-              console.log(response.data)
-          })
+        //   movieService.getAll(term)
+        //   .then((response) => {
+        //       this.movies=response.data
+        //       console.log(response.data)
+        //   })
+        this.currentTerm = term
       },
       onSelectedMovie(movie, isSelected) {
       if (!isSelected) {
@@ -161,8 +163,13 @@ export default {
     currentlyVisibleMovies(){
         let bottomLimit = (this.selectedPage -1) * 5
         let topLimit = bottomLimit + 5
-        return this.movies.filter((movie, index) => {
+        return this.filteredMovies.filter((movie, index) => {
             return index >= bottomLimit && index < topLimit
+        })
+    },
+    filteredMovies(){
+        return this.movies.filter((movie) => {
+            return movie.title.indexOf(this.currentTerm) > -1
         })
     }
   }
