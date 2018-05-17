@@ -64,12 +64,20 @@
       <div>Selected: {{ selectedMoviesCounter }}</div>
       <movie-search @search-term-change="onSearchTermChanged"/>
       <movie-row 
-        v-for="(movie, key) in movies" 
+        v-for="(movie, key) in currentlyVisibleMovies" 
         :key="key" 
         :movie="movie"
         @on-selected-movie="onSelectedMovie"
         :selectedMoviesIds="selectedMoviesIds"
       />
+
+        <movies-paginator
+        :pages="pages"
+        v-if="pages > 1"
+        @selected-page="onSelectedPage"
+        :selectedPage="selectedPage"
+        />
+
       <button class="btn btn-success" @click="selectAll">Select All</button>
       <button class="btn btn-danger" @click="deselectAll">Deselect All</button>
       <div v-if="!movies.length">
@@ -82,13 +90,16 @@
 import {movieService} from '../service/MovieService'
 import MovieRow from './MovieRow'
 import MovieSearch from './MovieSearch'
+import MoviesPaginator from './MoviesPaginator'
 export default {
     components:{
         MovieRow,
-        MovieSearch
+        MovieSearch,
+        MoviesPaginator
     },
     data(){
         return{
+            selectedPage: 1,
             movies: [],
             selectedMoviesIds: [],
             movieForm: {title: '', director: '', imageUrl: '', duration: '', releaseDate: '', genre: '' }
@@ -135,11 +146,24 @@ export default {
             }
             this.selectedMoviesIds.push(movie.id)
         })
+    },
+    onSelectedPage(page){
+        this.selectedPage=page
     }
   },
   computed:{
       selectedMoviesCounter() {
       return this.selectedMoviesIds.length
+    },
+    pages(){
+        return Math.ceil(this.movies.length / 5)
+    },
+    currentlyVisibleMovies(){
+        let bottomLimit = (this.selectedPage -1) * 5
+        let topLimit = bottomLimit + 5
+        return this.movies.filter((movie, index) => {
+            return index >= bottomLimit && index < topLimit
+        })
     }
   }
 }
