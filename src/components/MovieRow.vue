@@ -1,7 +1,7 @@
 <template>
-    <div> {{deselect}} {{select}}
+    <div>
     <div class="row"
-    :class="{ 'highlighted': selected }">
+    :class="{ 'highlighted': isSelected }">
     
 
         
@@ -10,7 +10,7 @@
         <div class="col-sm" v-text="movie.releaseDate"></div>
         <div class="col-sm" v-text="movie.director"></div>
         <div class="col-sm" v-text="movie.genre"></div>
-        <button class="btn btn-primary" @click="onSelected">Select</button>
+        <button class="btn btn-primary" @click="onSelected">Select/Deselect</button>
 
     </div>
     </div>
@@ -24,28 +24,25 @@ export default {
             type: Object,
             required: true
         },
-        isDeselect:{},
-        isSelectAll:{}
+        selectedMoviesIds: {
+            trpe: Array,
+            required: true,
+            default: () => []
+        }
     },
     data(){
         return{
-            selected: false
+            
         }
     },
     methods:{
         onSelected(){
-            this.selected=true
-            this.$emit('on-selected-movie', this.movie)
+            this.$emit('on-selected-movie', this.movie, !this.isSelected)
         }
     },
     computed:{
-        deselect(){
-            if(this.isDeselect)
-            this.selected=false
-        },
-        select(){
-            if(this.isSelectAll)
-            this.selected=true
+        isSelected(){
+            return this.selectedMoviesIds.indexOf(this.movie.id) > -1
         }
     }
 }

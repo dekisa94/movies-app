@@ -68,8 +68,7 @@
         :key="key" 
         :movie="movie"
         @on-selected-movie="onSelectedMovie"
-        :isDeselect="isDeselect"
-        :isSelectAll="isSelectAll"
+        :selectedMoviesIds="selectedMoviesIds"
       />
       <button class="btn btn-success" @click="selectAll">Select All</button>
       <button class="btn btn-danger" @click="deselectAll">Deselect All</button>
@@ -90,8 +89,6 @@ export default {
     },
     data(){
         return{
-            isSelectAll: false,
-            isDeselect: false,
             movies: [],
             selectedMoviesIds: [],
             movieForm: {title: '', director: '', imageUrl: '', duration: '', releaseDate: '', genre: '' }
@@ -118,17 +115,18 @@ export default {
               console.log(response.data)
           })
       },
-      onSelectedMovie(movie) {
-      if (this.selectedMoviesIds.indexOf(movie.id) > -1) {
+      onSelectedMovie(movie, isSelected) {
+      if (!isSelected) {
+        let movieIndex = this.selectedMoviesIds.indexOf(movie.id)
+        this.selectedMoviesIds.splice(movieIndex, 1)
         return;
       }
       this.selectedMoviesIds.push(movie.id)
-      this.isDeselect=false
+
     },
     deselectAll(){
         this.selectedMoviesIds=[]
-        this.isDeselect=true
-        this.isSelectAll=false
+
     },
     selectAll(){
         this.movies.forEach(movie =>{
@@ -137,8 +135,6 @@ export default {
             }
             this.selectedMoviesIds.push(movie.id)
         })
-        this.isSelectAll=true
-        this.isDeselect=false
     }
   },
   computed:{
