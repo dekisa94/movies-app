@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <form @submit.prevent="storeMovie">
-          <h2>Add new movie {{magicNumber}}</h2>
+          <h2>Add new movie</h2>
             <div class="form-group">
                 <label for="title">Movie title</label>
                 <input v-model="movieForm.title" 
@@ -86,120 +86,121 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapActions} from 'vuex'
-import {movieService} from '../service/MovieService'
-import MovieRow from './MovieRow'
-import MovieSearch from './MovieSearch'
-import MoviesPaginator from './MoviesPaginator'
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import { movieService } from "../service/MovieService";
+import MovieRow from "./MovieRow";
+import MovieSearch from "./MovieSearch";
+import MoviesPaginator from "./MoviesPaginator";
 export default {
-    components:{
-        MovieRow,
-        MovieSearch,
-        MoviesPaginator
+  components: {
+    MovieRow,
+    MovieSearch,
+    MoviesPaginator
+  },
+  data() {
+    return {
+      intervalId: null,
+      // currentTerm: '',
+      selectedPage: 1,
+      // movies: [],
+      selectedMoviesIds: [],
+      movieForm: {
+        title: "",
+        director: "",
+        imageUrl: "",
+        duration: "",
+        releaseDate: "",
+        genre: ""
+      }
+    };
+  },
+  // beforeRouteEnter (to, from, next) {
+  // movieService.getAll()
+  //   .then((response) => {
+  //     next((vm) => {
+  //       vm.movies = response.data
+  //     })
+  //   }).catch((error) => {
+  //     console.log(error)
+  //   })
+
+  //   },
+  methods: {
+    storeMovie() {
+      movieService.store(this.movieForm);
     },
-    data(){
-        return{
-            intervalId: null,
-            // currentTerm: '',
-            selectedPage: 1,
-            // movies: [],
-            selectedMoviesIds: [],
-            movieForm: {title: '', director: '', imageUrl: '', duration: '', releaseDate: '', genre: '' }
-        }
+    onSearchTermChanged(term) {
+      //   movieService.getAll(term)
+      //   .then((response) => {
+      //       this.movies=response.data
+      //       console.log(response.data)
+      //   })
+      this.currentTerm = term;
     },
-    // beforeRouteEnter (to, from, next) {
-    // movieService.getAll()
-    //   .then((response) => {
-    //     next((vm) => {
-    //       vm.movies = response.data
-    //     })
-    //   }).catch((error) => {
-    //     console.log(error)
-    //   })
-    
-//   },
-  methods:{
-      storeMovie(){
-          movieService.store(this.movieForm)
-      },
-      onSearchTermChanged(term){
-        //   movieService.getAll(term)
-        //   .then((response) => {
-        //       this.movies=response.data
-        //       console.log(response.data)
-        //   })
-        this.currentTerm = term
-      },
-      onSelectedMovie(movie, isSelected) {
+    onSelectedMovie(movie, isSelected) {
       if (!isSelected) {
-        let movieIndex = this.selectedMoviesIds.indexOf(movie.id)
-        this.selectedMoviesIds.splice(movieIndex, 1)
+        let movieIndex = this.selectedMoviesIds.indexOf(movie.id);
+        this.selectedMoviesIds.splice(movieIndex, 1);
         return;
       }
-      this.selectedMoviesIds.push(movie.id)
-
+      this.selectedMoviesIds.push(movie.id);
     },
-    deselectAll(){
-        this.selectedMoviesIds=[]
-
+    deselectAll() {
+      this.selectedMoviesIds = [];
     },
-    selectAll(){
-        this.movies.forEach(movie =>{
-            if (this.selectedMoviesIds.indexOf(movie.id) > -1){
-                return
-            }
-            this.selectedMoviesIds.push(movie.id)
-        })
+    selectAll() {
+      this.movies.forEach(movie => {
+        if (this.selectedMoviesIds.indexOf(movie.id) > -1) {
+          return;
+        }
+        this.selectedMoviesIds.push(movie.id);
+      });
     },
-    onSelectedPage(page){
-        this.selectedPage=page
+    onSelectedPage(page) {
+      this.selectedPage = page;
     },
-    ...mapMutations([
-        'incrementCounter'
-    ]),
-    ...mapActions([
-        'fetchMovies'
-    ])
+    ...mapMutations(["incrementCounter"]),
+    ...mapActions(["fetchMovies"])
   },
-  computed:{
-      selectedMoviesCounter() {
-      return this.selectedMoviesIds.length
+  computed: {
+    selectedMoviesCounter() {
+      return this.selectedMoviesIds.length;
     },
-    pages(){
-        return Math.ceil(this.movies.length / 5)
+    pages() {
+      return Math.ceil(this.movies.length / 5);
     },
-    currentlyVisibleMovies(){
-        let bottomLimit = (this.selectedPage -1) * 5
-        let topLimit = bottomLimit + 5
-        return this.filteredMovies.filter((movie, index) => {
-            return index >= bottomLimit && index < topLimit
-        })
+    currentlyVisibleMovies() {
+      let bottomLimit = (this.selectedPage - 1) * 5;
+      let topLimit = bottomLimit + 5;
+      return this.filteredMovies.filter((movie, index) => {
+        return index >= bottomLimit && index < topLimit;
+      });
     },
-    filteredMovies(){
-        return this.movies.filter((movie) => {
-            return movie.title.indexOf(this.currentTerm) > -1
-        })
+    filteredMovies() {
+      return this.movies.filter(movie => {
+        return movie.title.indexOf(this.currentTerm) > -1;
+      });
     },
     // magicNumber(){
     //     console.log(this.$store.getters)
     //     return 1
     // }
     ...mapGetters({
-        magicNumber:'getCounter',
-        currentTerm: 'getSearchTerm',
-        movies: 'getMovies'
+      magicNumber: "getCounter",
+      currentTerm: "getSearchTerm",
+      movies: "getMovies"
     })
   },
-  mounted(){
-      this.intervalId = setInterval(() => {
-          this.incrementCounter()
-      }, 1000)
+  mounted() {
+    this.intervalId = setInterval(() => {
+      this.incrementCounter();
+    }, 1000);
   },
-  destroyed(){
-      clearInterval(this.intervalId)
+  destroyed() {
+    clearInterval(this.intervalId);
   },
-  created(){
-      this.fetchMovies()
+  created() {
+    this.fetchMovies();
   }
-}
+};
 </script>
