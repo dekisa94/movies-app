@@ -56,6 +56,11 @@
                     class="form-control" 
                 />
             </div>
+            <div v-for="(error, key) in errors" :key="key" v-if="error" class="alert alert-danger">
+              <ul v-for="(oneError, key) in error" :key="key">
+                <li>{{oneError}}</li>
+              </ul>
+            </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-success" />
             </div>
@@ -99,6 +104,7 @@ export default {
   },
   data() {
     return {
+      errors: [],
       intervalId: null,
       // currentTerm: '',
       selectedPage: 1,
@@ -127,7 +133,9 @@ export default {
   //   },
   methods: {
     storeMovie() {
-      movieService.store(this.movieForm);
+      movieService.store(this.movieForm).catch(errors => {
+        this.errors = errors.response.data;
+      });
     },
     onSearchTermChanged(term) {
       //   movieService.getAll(term)
