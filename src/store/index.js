@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
   state: {
     counter: 1,
     searchTerm: "",
-    movies: []
+    movies: [],
+    isAuthenticated: false
   },
   getters: {
     getCounter(state) {
@@ -20,6 +21,9 @@ export const store = new Vuex.Store({
     },
     getMovies(state) {
       return state.movies;
+    },
+    getIsAuthenticated(state){
+      return state.isAuthenticated;
     }
   },
   mutations: {
@@ -31,6 +35,9 @@ export const store = new Vuex.Store({
     },
     setMovies(state, movies) {
       state.movies = movies;
+    },
+    setIsAuthenticated(state, auth){
+      state.isAuthenticated = auth;
     }
   },
   actions: {

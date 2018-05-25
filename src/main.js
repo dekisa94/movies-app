@@ -8,6 +8,7 @@ import {store} from './store'
 
 import App from './App.vue'
 import AppMovies from './components/AppMovies'
+import Login from './components/Login'
 
 
 Vue.config.productionTip = false
@@ -17,7 +18,8 @@ Vue.use(BootstrapVue);
 
 const routes = [
   {path: '/', redirect: 'movies'},
-  {path: '/movies', component: AppMovies}
+  {path: '/movies', component: AppMovies, name: 'movies'},
+  {path: '/login', component: Login, name: 'login'}
 ]
 const router = new VueRouter({
   routes,

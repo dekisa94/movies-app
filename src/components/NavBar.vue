@@ -7,7 +7,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <!-- <router-link class="nav-item nav-link" to="/movies">Movies</router-link> -->
+           <router-link class="nav-item nav-link" to="/login" v-if="!isAuth">Login</router-link>
+           <a href="" class="nav-item nav-link" @click="logout" v-if="isAuth">Logout</a>
         </div>
         <movie-search @search-term-change="setSearchTerm"/>
       </div>
@@ -16,18 +17,38 @@
 </template>
 
 <script>
+import {authService} from '../service/AuthService'
 import MovieSearch from './MovieSearch'
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 export default {
   name: 'NavBar',
   components:{
     MovieSearch
   },
+  data(){
+    return{
+      // isAuthenticated: authService.isAuthenticated()
+    }
+  },
   methods:{
     ...mapMutations([
-      'setSearchTerm'
-    ])
+      'setSearchTerm',
+      'setIsAuthenticated'
+    ]),
+    logout(){
+    authService.logout();
+    setIsAuthenticated(false)
+    }
+  },
+  computed:{
+    isAuth(){
+      return getAuthent
+    },
+    ...mapGetters({
+      getAuthent: 'getIsAuthenticated'
+    })
   }
+  
 
 }
 </script>
