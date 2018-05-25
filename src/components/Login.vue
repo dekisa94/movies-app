@@ -10,26 +10,23 @@
 </template>
 
 <script>
-import {authService} from '../service/AuthService'
-import { mapMutations } from 'vuex';
-  export default {
-    data() {
-      return {
-        email: '',
-        password: ''
-      }
-    },
-    methods: {
-        ...mapMutations([
-            'setIsAuthenticated'
-        ]),
-      login() {
-          authService.login(this.email, this.password)
-          .then(()=>{
-            this.$router.push({name: 'movies'})
-            setIsAuthenticated(true);
-          })
-      }
+import { authService } from "../service/AuthService";
+import { mapMutations } from "vuex";
+export default {
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  methods: {
+    ...mapMutations(["setIsAuthenticated"]),
+    login() {
+      authService.login(this.email, this.password).then(() => {
+        this.$router.push({ name: "movies" });
+        this.setIsAuthenticated(true);
+      });
     }
   }
+};
 </script>

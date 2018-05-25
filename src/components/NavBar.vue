@@ -17,38 +17,33 @@
 </template>
 
 <script>
-import {authService} from '../service/AuthService'
-import MovieSearch from './MovieSearch'
-import { mapMutations, mapGetters } from 'vuex';
+import { authService } from "../service/AuthService";
+import MovieSearch from "./MovieSearch";
+import { mapMutations, mapGetters } from "vuex";
 export default {
-  name: 'NavBar',
-  components:{
+  name: "NavBar",
+  components: {
     MovieSearch
   },
-  data(){
-    return{
+  data() {
+    return {
       // isAuthenticated: authService.isAuthenticated()
+    };
+  },
+  methods: {
+    ...mapMutations(["setSearchTerm", "setIsAuthenticated"]),
+    logout() {
+      authService.logout();
+      this.setIsAuthenticated(false);
     }
   },
-  methods:{
-    ...mapMutations([
-      'setSearchTerm',
-      'setIsAuthenticated'
-    ]),
-    logout(){
-    authService.logout();
-    setIsAuthenticated(false)
-    }
-  },
-  computed:{
-    isAuth(){
-      return getAuthent
-    },
+  computed: {
     ...mapGetters({
-      getAuthent: 'getIsAuthenticated'
-    })
+      getAuthent: "getIsAuthenticated"
+    }),
+    isAuth() {
+      return this.getAuthent;
+    }
   }
-  
-
-}
+};
 </script>
