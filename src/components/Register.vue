@@ -5,7 +5,7 @@
       <input v-model="name" type="text" class="form-control" name="name" placeholder="Name" autofocus />
       <input v-model="email" type="text" class="form-control" name="email" placeholder="Email Address" />
       <input v-model="password" type="password" class="form-control" name="password" placeholder="Password" />
-      <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password" />
+      <input v-model="password_confirmation" type="password" class="form-control" name="password_confirmation" placeholder="Confirm password" />
       <div v-for="(error, key) in errors" :key="key" v-if="error" class="alert alert-danger">
               <ul v-for="(oneError, key) in error" :key="key">
                 <li>{{oneError}}</li>
@@ -24,14 +24,22 @@ export default {
       name: "",
       email: "",
       password: "",
+      password_confirmation: "",
       errors: ""
     };
   },
   methods: {
     register() {
       authService
-        .register(this.name, this.email, this.password)
-        .then(() => {})
+        .register(
+          this.name,
+          this.email,
+          this.password,
+          this.password_confirmation
+        )
+        .then(() => {
+          this.$router.push("/movies");
+        })
         .catch(error => {
           this.errors = error.response.data;
         });

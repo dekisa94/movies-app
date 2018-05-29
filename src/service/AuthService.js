@@ -25,11 +25,12 @@ export default class AuthService {
     return window.localStorage.removeItem("loginToken");
     delete axios.defaults.headers.common["Authorization"];
   }
-  register(name, email, password) {
+  register(name, email, password, password_confirmation) {
     return axios.post("register", {
       name,
       email,
-      password
+      password,
+      password_confirmation
     });
   }
 }
