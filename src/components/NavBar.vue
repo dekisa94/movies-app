@@ -10,6 +10,9 @@
            <router-link class="nav-item nav-link" to="/login" v-if="!isAuth">Login</router-link>
            <a href="" class="nav-item nav-link" @click="logout" v-if="isAuth">Logout</a>
         </div>
+        <div class="navbar-nav">
+          <router-link class="nav-item nav-link" to="/register" v-if="!isAuth">Register</router-link>
+        </div>
         <movie-search @search-term-change="setSearchTerm"/>
       </div>
     </nav>
