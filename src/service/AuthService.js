@@ -18,6 +18,9 @@ export default class AuthService {
     const TOKEN = `Bearer ${window.localStorage.getItem("loginToken")}`;
     axios.defaults.headers.common["Authorization"] = TOKEN;
   }
+  isAuthenticated() {
+    return !!window.localStorage.getItem("loginToken");
+  }
   logout() {
     return window.localStorage.removeItem("loginToken");
     delete axios.defaults.headers.common["Authorization"];

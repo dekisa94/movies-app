@@ -29,9 +29,7 @@ export default {
     MovieSearch
   },
   data() {
-    return {
-      // isAuthenticated: authService.isAuthenticated()
-    };
+    return {};
   },
   methods: {
     ...mapMutations(["setSearchTerm", "setIsAuthenticated"]),
