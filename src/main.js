@@ -10,6 +10,7 @@ import App from "./App.vue";
 import AppMovies from "./components/AppMovies";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import SingleMovie from "./components/SingleMovie";
 
 Vue.config.productionTip = false;
 
@@ -20,7 +21,8 @@ const routes = [
   { path: "/", redirect: "movies" },
   { path: "/movies", component: AppMovies, name: "movies" },
   { path: "/login", component: Login, name: "login" },
-  { path: "/register", component: Register, name: "register" }
+  { path: "/register", component: Register, name: "register" },
+  { path: "/movies/:id", component: SingleMovie, name: "single-movie" }
 ];
 const router = new VueRouter({
   routes,
